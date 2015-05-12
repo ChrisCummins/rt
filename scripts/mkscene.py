@@ -345,7 +345,7 @@ def get_material_code(name, pairs):
               .format(name))
     materials.add(name);
 
-    return ("const Material *const restrict {name} = "
+    return ("Material *restrict {name} = "
             "new Material({colour}, {ambient}, {diffuse}, "
             "{specular}, {shininess}, {reflectivity});"
             .format(name=name, colour=colour, ambient=ambient, diffuse=diffuse,
@@ -364,7 +364,7 @@ def get_plane_code(name, pairs):
               .format(name))
     objects.add(name)
 
-    return ("const Plane *const restrict {name} = "
+    return ("Plane *restrict {name} = "
             "new Plane({position}, {direction}, {material});"
             .format(name=name, position=position, direction=direction,
                     material=material))
@@ -381,7 +381,7 @@ def get_checkerboard_code(name, pairs):
               .format(name))
     objects.add(name)
 
-    return ("const CheckerBoard *const restrict {name} = "
+    return ("CheckerBoard *restrict {name} = "
             "new CheckerBoard({position}, {direction}, {size}, "
             "{material1}, {material2});"
             .format(name=name, position=position, direction=direction,
@@ -397,7 +397,7 @@ def get_sphere_code(name, pairs):
               .format(name))
     objects.add(name)
 
-    return ("const Sphere *const restrict {name} = "
+    return ("Sphere *restrict {name} = "
             "new Sphere({position}, {size}, {material});"
             .format(name=name, position=position, size=size,
                     material=material))
@@ -428,7 +428,7 @@ def get_softlight_code(name, pairs):
               .format(name))
     lights.add(name)
 
-    return ("const SoftLight *const restrict {name} = "
+    return ("SoftLight *restrict {name} = "
             "new SoftLight({position}, {colour}, {size}, {samples});"
             .format(name=name, position=position, size=size,
                     colour=colour, samples=samples))
@@ -442,7 +442,7 @@ def get_pointlight_code(name, pairs):
               .format(name))
     lights.add(name)
 
-    return ("const SoftLight *const restrict {name} = "
+    return ("SoftLight *restrict {name} = "
             "new SoftLight({position}, {colour});"
             .format(name=name, position=position, colour=colour))
 
@@ -476,7 +476,7 @@ def get_camera_perspective_code(name, pairs):
               .format(camera, name))
     camera = name
 
-    return ("const Camera *const restrict {name} = "
+    return ("Camera *restrict {name} = "
             "new Camera({position}, {lookat}, "
             "{width}, {height}, "
             "Lens({focal}, {aperture}, {focus}));"
@@ -580,17 +580,17 @@ def get_section_code(section):
         return "// Not implemented: {0}".format(name)
 
 def get_scene_code():
-    c = "const Object *_objects[] = {\n"
+    c = "Object *_objects[] = {\n"
     for object in objects:
         c += "  {0},\n".format(object)
     c += "};\n"
-    c += "const Light *_lights[] = {\n"
+    c += "Light *_lights[] = {\n"
     for light in lights:
         c += "  {0},\n".format(light)
     c += "};\n"
-    c += "const Objects objects(_objects, _objects + (sizeof(_objects) / sizeof(_objects[0])));\n"
-    c += "const Lights lights(_lights, _lights + (sizeof(_lights) / sizeof(_lights[0])));\n"
-    c += "const Scene *const restrict scene = new Scene(objects, lights);\n"
+    c += "Objects objects(_objects, _objects + (sizeof(_objects) / sizeof(_objects[0])));\n"
+    c += "Lights lights(_lights, _lights + (sizeof(_lights) / sizeof(_lights[0])));\n"
+    c += "Scene *restrict scene = new Scene(objects, lights);\n"
 
     return c
 

@@ -34,9 +34,9 @@ namespace rt {
 
         // Render the target image and write output to path. Prints
         // profiling information.
-        void render(const Renderer *const restrict renderer,
-                    const Image *const restrict image,
-                    const char *const restrict path);
+        void render(Renderer *restrict renderer,
+                    Image *restrict image,
+                    char *restrict path);
 
 }  // namespace rt
 

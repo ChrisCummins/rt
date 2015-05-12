@@ -41,7 +41,7 @@ static const Scalar ScalarPrecision = 1e-6;
 
 namespace radians {
         // Conversion from radians to degrees.
-        Scalar inline toDegrees(const Scalar radians) {
+        Scalar inline toDegrees(Scalar radians) {
                 return radians * M_PI / 180.0;
         }
 }  // namespace radians
@@ -50,17 +50,17 @@ namespace deg {
         // Trigonometric functions accepting theta angles in degrees
         // rather than radians:
 
-        Scalar inline sin(const Scalar theta) {
+        Scalar inline sin(Scalar theta) {
                 return sin(radians::toDegrees(theta));
         }
 
-        Scalar inline cos(const Scalar theta) {
+        Scalar inline cos(Scalar theta) {
                 return cos(radians::toDegrees(theta));
         }
 }  // namespace deg
 
 // Clamp a Scalar value to within the range [0,1].
-Scalar inline clamp(const Scalar x) {
+Scalar inline clamp(Scalar x) {
         if (x > 1)
                 return 1;
         if (x < 0)
@@ -73,80 +73,80 @@ Scalar inline clamp(const Scalar x) {
 // scalar. Vectors are immutable.
 class Vector {
  public:
-        const Scalar x;
-        const Scalar y;
-        const Scalar z;
-        const Scalar w;
+        Scalar x;
+        Scalar y;
+        Scalar z;
+        Scalar w;
 
         // Contructor: V = (x,y,z,w)
-        inline Vector(const Scalar _x, const Scalar _y, const Scalar _z,
-                      const Scalar _w = 0) : x(_x), y(_y), z(_z), w(_w) {}
+        inline Vector(Scalar _x, Scalar _y, Scalar _z,
+                      Scalar _w = 0) : x(_x), y(_y), z(_z), w(_w) {}
 
         // Addition: A' = A + B
-        Vector inline operator+(const Vector &b) const {
+        Vector inline operator+(Vector b) {
                 return Vector(x + b.x, y + b.y, z + b.z);
         }
 
         // Subtraction: A' = A - B
-        Vector inline operator-(const Vector &b) const {
+        Vector inline operator-(Vector b) {
                 return Vector(x - b.x, y - b.y, z - b.z);
         }
 
         // Multiplication: A' = aA
-        Vector inline operator*(const Scalar a) const {
+        Vector inline operator*(Scalar a) {
                 return Vector(a * x, a * y, a * z);
         }
 
         // Division: A' = A / a
-        Vector inline operator/(const Scalar a) const {
+        Vector inline operator/(Scalar a) {
                 return Vector(x / a, y / a, z / a);
         }
 
         // Product: A' = (Ax * Bx, Ay * By, Az * Bz)
-        Vector inline operator*(const Vector &b) const {
+        Vector inline operator*(Vector b) {
                 return Vector(x * b.x, y * b.y, z * b.z);
         }
 
         // Dot product: x = A . B
-        Scalar inline operator^(const Vector &b) const {
+        Scalar inline operator^(Vector b) {
                 // Dot product uses the forth component.
                 return x * b.x + y * b.y + z * b.z + w * b.w;
         }
 
         // Cross product: A' = A x B
-        Vector inline operator|(const Vector &b) const {
+        Vector inline operator|(Vector b) {
                 return Vector(y * b.z - z * b.y,
                               z * b.x - x * b.z,
                               x * b.y - y * b.z);
         }
 
         // Equality: A == B
-        bool inline operator==(const Vector &b) const {
+        bool inline operator==(Vector b) {
                 return x == b.x && y == b.y && z == b.z;
         }
 
         // Inequality: A != B
-        bool inline operator!=(const Vector &b) const {
+        bool inline operator!=(Vector b) {
                 return !(*this == b);
         }
 
         // Length of vector: |A| = sqrt(x^2 + y^2 + z^2)
-        Scalar inline size() const {
+        Scalar inline size() {
                 return sqrt(x * x + y * y + z * z);
         }
 
         // Product of components: x * y * z
-        Scalar inline product() const {
+        Scalar inline product() {
                 return x * y * z;
         }
 
         // Sum of components: x + y + z
-        Scalar inline sum() const {
+        Scalar inline sum() {
                 return x + y + z;
         }
 
         // Normalise: A' = A / |A|
-        Vector inline normalise() const {
+        Vector inline normalise() {
                 return *this / size();
         }
 };
@@ -157,14 +157,14 @@ class Vector {
 class Matrix {
  public:
         // Row-wise vectors.
-        const Vector r[4];
+        Vector r[4];
         // Column-wise vectors.
-        const Vector c[4];
+        Vector c[4];
 
-        inline Matrix(const Vector r1,
-                      const Vector r2,
-                      const Vector r3,
-                      const Vector r4)
+        inline Matrix(Vector r1,
+                      Vector r2,
+                      Vector r3,
+                      Vector r4)
                : r({r1, r2, r3, r4}),
                  c({Vector(r1.x, r2.x, r3.x, r4.x),
                     Vector(r1.y, r2.y, r3.y, r4.y),
@@ -172,7 +172,7 @@ class Matrix {
                     Vector(r1.w, r2.w, r3.w, r4.w)}) {}
 
         // Matrix multiplication.
-        Matrix inline operator*(const Matrix &b) const {
+        Matrix inline operator*(Matrix b) {
                 return Matrix(
                     Vector(r[0] ^ b.c[0], r[0] ^ b.c[1],
                            r[0] ^ b.c[2], r[0] ^ b.c[3]),
@@ -185,14 +185,14 @@ class Matrix {
         }
 
         // Matrix by vector multiplication.
-        Vector inline operator*(const Vector &b) const {
+        Vector inline operator*(Vector b) {
                 // Pad the "w" component.
-                const Vector v = Vector(b.x, b.y, b.z, 1);
+                Vector v = Vector(b.x, b.y, b.z, 1);
                 return Vector(r[0] ^ v, r[1] ^ v, r[2] ^ v, r[3] ^ v);
         }
 
         // Scalar multiplication.
-        Matrix inline operator*(const Scalar a) const {
+        Matrix inline operator*(Scalar a) {
                 return Matrix(r[0] * a, r[1] * a, r[2] * a, r[3] * a);
         }
 };
@@ -200,12 +200,12 @@ class Matrix {
 // A translation matrix.
 class Translation : public Matrix {
  public:
-        inline Translation(const Scalar x, const Scalar y, const Scalar z)
+        inline Translation(Scalar x, Scalar y, Scalar z)
                         : Matrix(Vector(1, 0, 0, x),
                                  Vector(0, 1, 0, y),
                                  Vector(0, 0, 1, z),
                                  Vector(0, 0, 0, 1)) {}
-        explicit inline Translation(const Vector &t)
+        explicit inline Translation(Vector t)
                         : Matrix(Vector(1, 0, 0, t.x),
                                  Vector(0, 1, 0, t.y),
                                  Vector(0, 0, 1, t.z),
@@ -215,13 +215,13 @@ class Translation : public Matrix {
 // A scale matrix.
 class Scale : public Matrix {
  public:
-        inline Scale(const Scalar x, const Scalar y, const Scalar z)
+        inline Scale(Scalar x, Scalar y, Scalar z)
                         : Matrix(Vector(x, 0, 0, 0),
                                  Vector(0, y, 0, 0),
                                  Vector(0, 0, z, 0),
                                  Vector(0, 0, 0, 1)) {}
 
-        explicit inline Scale(const Vector &w)
+        explicit inline Scale(Vector w)
                         : Matrix(Vector(w.x, 0, 0, 0),
                                  Vector(0, w.y, 0, 0),
                                  Vector(0, 0, w.z, 0),
@@ -231,7 +231,7 @@ class Scale : public Matrix {
 // A rotation matrix about the X axis.
 class RotationX : public Matrix {
  public:
-        explicit inline RotationX(const Scalar theta)
+        explicit inline RotationX(Scalar theta)
                        : Matrix(Vector(1, 0, 0, 0),
                                 Vector(0, deg::cos(theta), -deg::sin(theta), 0),
                                 Vector(0, deg::sin(theta), deg::cos(theta), 0),
@@ -241,7 +241,7 @@ class RotationX : public Matrix {
 // A rotation matrix about the Y axis.
 class RotationY : public Matrix {
  public:
-        explicit inline RotationY(const Scalar theta)
+        explicit inline RotationY(Scalar theta)
                        : Matrix(Vector(deg::cos(theta), 0, deg::sin(theta), 0),
                                 Vector(0, 1, 0, 0),
                                 Vector(-deg::sin(theta), 0, deg::cos(theta), 0),
@@ -251,7 +251,7 @@ class RotationY : public Matrix {
 // A rotation matrix about the Z axis.
 class RotationZ : public Matrix {
  public:
-        explicit inline RotationZ(const Scalar theta)
+        explicit inline RotationZ(Scalar theta)
                        : Matrix(Vector(deg::cos(theta), -deg::sin(theta), 0, 0),
                                 Vector(deg::sin(theta), deg::cos(theta), 0, 0),
                                 Vector(0, 0, 1, 0),
@@ -259,8 +259,11 @@ class RotationZ : public Matrix {
 };
 
 // Yaw, pitch, roll rotation.
-Matrix inline rotation(const Scalar x, const Scalar y, const Scalar z) {
-        return RotationZ(z) * RotationY(y) * RotationX(x);
+Matrix inline rotation(Scalar x, Scalar y, Scalar z) {
+        Matrix Z = RotationZ(z);
+        Matrix Y = RotationY(y);
+        Matrix X = RotationX(x);
+        return Z * Y * X;
 }
 
 }  // namespace rt

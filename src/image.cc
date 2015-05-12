@@ -21,9 +21,9 @@
 
 namespace rt {
 
-Image::Image(const size_t _width, const size_t _height,
-             const Scalar _saturation, const Colour _gamma,
-             const bool _inverted)
+Image::Image(size_t _width, size_t _height,
+             Scalar _saturation, Colour _gamma,
+             bool _inverted)
                 : data(new Pixel[_width * _height]),
                   width(_width),
                   height(_height),
@@ -37,7 +37,7 @@ Image::~Image() {
         delete[] data;
 }
 
-void Image::write(FILE *const restrict out) const {
+void Image::write(FILE *restrict out) {
         // Print PPM header.
         fprintf(out, "P3\n");                      // Magic number
         fprintf(out, "%lu %lu\n", width, height);  // Image dimensions
@@ -45,7 +45,7 @@ void Image::write(FILE *const restrict out) const {
 
         // Iterate over each point in the image, writing pixel data.
         for (size_t i = 0; i < height * width; i++) {
-                const Pixel pixel = data[i];
+                Pixel pixel = data[i];
                 fprintf(out,
                         PixelFormatString" "
                         PixelFormatString" "
@@ -57,8 +57,8 @@ void Image::write(FILE *const restrict out) const {
         }
 }
 
-void Image::_set(const size_t i,
-                 const Colour &value) const {
+void Image::_set(size_t i,
+                 Colour &value) {
         // Apply gamma correction.
         Colour corrected = Colour(std::pow(value.r, gamma.r),
                                   std::pow(value.g, gamma.g),

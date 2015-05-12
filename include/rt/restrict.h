@@ -21,7 +21,7 @@
 #define RT_RESTRICT_H_
 
 // GCC provides a C99 `restrict'-like keyword.
-#ifdef __GNUC__
+#ifdef __AAGNUC__
 # define restrict __restrict__
 #else
 # define restrict

@@ -34,8 +34,8 @@ typedef uint64_t Seed;
 // within a specific range.
 class UniformDistribution {
  public:
-    inline UniformDistribution(const Scalar _min, const Scalar _max,
-                               const Seed _seed = 7564231ULL)
+    inline UniformDistribution(Scalar _min, Scalar _max,
+                               Seed _seed = 7564231ULL)
             : divisor(scalarMax / (_max - _min)),
                       min(_min),  // NOLINT(build/include_what_you_use)
                       seed(_seed) {}
@@ -45,28 +45,28 @@ class UniformDistribution {
             seed *= mult;
 
             // Generate a new random value in the range [0,max - min].
-            const double r = seed % longMax / divisor;
+            double r = seed % longMax / divisor;
             // Apply "-min" offset to value.
             return r + min;
     }
 
-    const Scalar divisor;
-    const Scalar min;
+    Scalar divisor;
+    Scalar min;
     uint64_t seed;
 
  private:
     // Constant values for random number generators.
-    static const uint64_t rngMax;
-    static const uint64_t longMax;
-    static const Scalar scalarMax;
-    static const uint64_t mult;
+    static uint64_t rngMax;
+    static uint64_t longMax;
+    static Scalar scalarMax;
+    static uint64_t mult;
 };
 
 // A generator for sampling random points over a disk.
 class UniformDiskDistribution {
  public:
-        inline UniformDiskDistribution(const Scalar _radius,
-                                       const Seed _seed = 7564231ULL)
+        inline UniformDiskDistribution(Scalar _radius,
+                                       Seed _seed = 7564231ULL)
                 : angle(UniformDistribution(0, 2 * M_PI, _seed)),
                   rand01(UniformDistribution(0, 1, _seed)),
                   radius(_radius) {}
@@ -75,11 +75,11 @@ class UniformDiskDistribution {
         // components corresponding to the x and y coordinates of the
         // point within the disk.
         Vector inline operator()() {
-                const Scalar theta = angle();
-                const Scalar distance = radius * sqrt(rand01());
+                Scalar theta = angle();
+                Scalar distance = radius * sqrt(rand01());
 
-                const Scalar x = distance * cos(theta);
-                const Scalar y = distance * sin(theta);
+                Scalar x = distance * cos(theta);
+                Scalar y = distance * sin(theta);
 
                 return Vector(x, y, 0);
         }
@@ -87,7 +87,7 @@ class UniformDiskDistribution {
  private:
         UniformDistribution angle;
         UniformDistribution rand01;
-        const Scalar radius;
+        Scalar radius;
 };
 
 }  // namespace rt

@@ -24,9 +24,9 @@
 
 namespace debug {
 
-const bool SHOW_SUPERSAMPLE_PIXELS           = false;
-const bool SHOW_RECURSIVE_SUPERSAMPLE_PIXELS = false;
-const int  PIXEL_HIGHLIGHT_COLOUR            = 0xffffff;
+bool SHOW_SUPERSAMPLE_PIXELS           = false;
+bool SHOW_RECURSIVE_SUPERSAMPLE_PIXELS = false;
+int  PIXEL_HIGHLIGHT_COLOUR            = 0xffffff;
 
 }  // namespace debug
 

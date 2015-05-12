@@ -31,12 +31,12 @@ namespace rt {
 // lights).
 class Scene {
  public:
-        const Objects objects;
-        const Lights lights;
+        Objects objects;
+        Lights lights;
 
         // Constructor.
-        inline Scene(const Objects &_objects,
-                     const Lights &_lights)
+        inline Scene(Objects &_objects,
+                     Lights &_lights)
                 : objects(_objects), lights(_lights) {}
 
         inline ~Scene() {

@@ -37,7 +37,7 @@ class Timer {
 
         // Return the number of milliseconds.
         Scalar inline elapsed() {
-                const std::chrono::high_resolution_clock::time_point end =
+                std::chrono::high_resolution_clock::time_point end =
                                 std::chrono::high_resolution_clock::now();
                 return static_cast<Scalar>(
                     std::chrono::duration_cast<std::chrono::microseconds>(
@@ -45,7 +45,7 @@ class Timer {
         }
 
  private:
-        const std::chrono::high_resolution_clock::time_point start;
+        std::chrono::high_resolution_clock::time_point start;
 };
 
 // Counter data type.
@@ -54,19 +54,19 @@ typedef uint64_t Counter;
 namespace counters {
 
 // Counter for the number of objects.
-void incObjectsCount(const size_t n = 1);
+void incObjectsCount(size_t n = 1);
 Counter getObjectsCount();
 
 // Counter for the number of lights.
-void incLightsCount(const size_t n = 1);
+void incLightsCount(size_t n = 1);
 Counter getLightsCount();
 
 // Counter for the number of traces.
-void incTraceCount(const size_t n = 1);
+void incTraceCount(size_t n = 1);
 Counter getTraceCount();
 
 // Counter for the number of rays.
-void incRayCount(const size_t n = 1);
+void incRayCount(size_t n = 1);
 Counter getRayCount();
 
 }  // namespace counters

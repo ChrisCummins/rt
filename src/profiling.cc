@@ -30,7 +30,7 @@ static std::atomic<Counter> lightsCount;
 static std::atomic<Counter> traceCounter;
 static std::atomic<Counter> rayCounter;
 
-void incObjectsCount(const size_t n) {
+void incObjectsCount(size_t n) {
     objectsCount += n;
 }
 
@@ -38,7 +38,7 @@ Counter getObjectsCount() {
     return static_cast<Counter>(objectsCount);
 }
 
-void incLightsCount(const size_t n) {
+void incLightsCount(size_t n) {
     lightsCount += n;
 }
 
@@ -46,7 +46,7 @@ Counter getLightsCount() {
     return static_cast<Counter>(lightsCount);
 }
 
-void incTraceCount(const size_t n) {
+void incTraceCount(size_t n) {
     traceCounter += n;
 }
 
@@ -54,7 +54,7 @@ Counter getTraceCount() {
     return static_cast<Counter>(traceCounter);
 }
 
-void incRayCount(const size_t n) {
+void incRayCount(size_t n) {
     rayCounter += n;
 }
 

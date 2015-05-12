@@ -23,9 +23,9 @@
 
 namespace rt {
 
-void render(const Renderer *const restrict renderer,
-            const Image *const restrict image,
-            const char *const restrict path) {
+void render(Renderer *restrict renderer,
+            Image *restrict image,
+            char *restrict path) {
         // Print start message.
         printf("Rendering %lu pixels, with "
                "%lu objects, and %lu light sources ...\n",
@@ -44,7 +44,7 @@ void render(const Renderer *const restrict renderer,
 
         // Open the output file.
         printf("Opening file '%s'...\n", path);
-        FILE *const restrict out = fopen(path, "w");
+        FILE *restrict out = fopen(path, "w");
 
         // Write to output file.
         image->write(out);

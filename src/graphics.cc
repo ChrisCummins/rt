@@ -24,7 +24,7 @@
 
 namespace rt {
 
-Colour::Colour(const HSL &hsl) {
+Colour::Colour(HSL &hsl) {
         Scalar tmp1, tmp2, tmp3[3];
         Scalar clr[3];
         Scalar h = hsl.h / 360.0;
@@ -70,11 +70,11 @@ Colour::Colour(const HSL &hsl) {
         b = clr[2];
 }
 
-HSL::HSL(const Colour &in) {
-        const Colour c = in.clampRange();
-        const Scalar max = c.max();
-        const Scalar min = c.min();
-        const Scalar delta = c.delta();
+HSL::HSL(Colour &in) {
+        Colour c = in.clampRange();
+        Scalar max = c.max();
+        Scalar min = c.min();
+        Scalar delta = c.delta();
 
         l = (max + min) / 2;
         s = 0;

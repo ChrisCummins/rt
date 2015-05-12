@@ -29,13 +29,13 @@ namespace rt {
 // focus point.
 class Lens {
  public:
-        const Scalar focalLength;
-        const Scalar focus;
+        Scalar focalLength;
+        Scalar focus;
         mutable UniformDiskDistribution aperture;
 
-        inline Lens(const Scalar _focalLength,
-                    const Scalar _aperture = 1,
-                    const Scalar _focus = 1)
+        inline Lens(Scalar _focalLength,
+                    Scalar _aperture = 1,
+                    Scalar _focus = 1)
                 : focalLength(_focalLength),
                   focus(_focus),
                   aperture(UniformDiskDistribution(_aperture)) {}
@@ -45,21 +45,21 @@ class Lens {
 // size, and a lens.
 class Camera {
  public:
-        const Vector position;
-        const Vector direction;
-        const Vector filmBack;
-        const Vector right;
-        const Vector up;
-        const Scalar width;
-        const Scalar height;
-        const Lens   lens;
-        const Scalar focusDistance;
+        Vector position;
+        Vector direction;
+        Vector filmBack;
+        Vector right;
+        Vector up;
+        Scalar width;
+        Scalar height;
+        Lens   lens;
+        Scalar focusDistance;
 
-        inline Camera(const Vector &_position,
-                      const Vector &_lookAt,
-                      const Scalar _width,
-                      const Scalar _height,
-                      const Lens   &_lens)
+        inline Camera(Vector _position,
+                      Vector _lookAt,
+                      Scalar _width,
+                      Scalar _height,
+                      Lens   _lens)
                 : position(_position),
                   direction((_lookAt - _position).normalise()),
                   filmBack(_position - (_lookAt - _position).normalise()

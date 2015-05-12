@@ -40,39 +40,39 @@ class Light {
 
     // Calculate the shading colour at `point' for a given surface
     // material, surface normal, and direction to the ray.
-    virtual Colour shade(const Vector &point,
-                         const Vector &normal,
-                         const Vector &toRay,
-                         const Material *const restrict material,
-                         const Objects objects) const = 0;
+    virtual Colour shade(Vector point,
+                         Vector normal,
+                         Vector toRay,
+                         Material *restrict material,
+                         Objects objects) = 0;
 };
 
-typedef std::vector<const Light *> Lights;
+typedef std::vector<Light *> Lights;
 
 // A round light source.
 class SoftLight : public Light {
  public:
-        const Vector position;
-        const Colour colour;
-        const size_t samples;
+        Vector position;
+        Colour colour;
+        size_t samples;
         mutable UniformDistribution sampler;
 
         // Constructor.
-        inline SoftLight(const Vector &_position,
-                         const Colour &_colour = Colour(0xff, 0xff, 0xff),
-                         const Scalar _radius = 0,
-                         const size_t _samples = 1)
+        inline SoftLight(Vector _position,
+                         Colour _colour,
+                         Scalar _radius = 0,
+                         size_t _samples = 1)
                 : position(_position), colour(_colour), samples(_samples),
                            sampler(UniformDistribution(-_radius, _radius)) {
                 // Register lights with profiling counter.
                 profiling::counters::incLightsCount(_samples);
         }
 
-        virtual Colour shade(const Vector &point,
-                             const Vector &normal,
-                             const Vector &toRay,
-                             const Material *const restrict material,
-                             const Objects objects) const;
+        virtual Colour shade(Vector point,
+                             Vector normal,
+                             Vector toRay,
+                             Material *restrict material,
+                             Objects objects) ;
 };
 
 }  // namespace rt

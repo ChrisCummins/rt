@@ -36,14 +36,14 @@ namespace rt {
 typedef uint8_t PixelColourType;
 
 // The maximum value of a single R,G,B colour component.
-static const uint8_t PixelColourMax = 255;
+static uint8_t PixelColourMax = 255;
 
 // Format string to be passed to fprintf().
 #define PixelFormatString "%u"
 
 // Transform a scalar from the range [0,1] to [0,PixelColourMax]. Note
 // that this transformation may be non-linear.
-PixelColourType inline scale(const Scalar x) {
+PixelColourType inline scale(Scalar x) {
         return static_cast<PixelColourType>(
             x * static_cast<Scalar>(PixelColourMax));
 }
@@ -62,80 +62,80 @@ class Colour {
 
         // Constructor for specifying colours as 32 bit hex
         // string. E.g. 0xff00aa.
-        explicit inline Colour(const int hex)
+        explicit inline Colour(int hex)
                         : r((hex >> 16) / 255.),
                         g(((hex >> 8) & 0xff) / 255.),
                         b((hex & 0xff) / 255.) {}
 
         // Contructor: C = (r,g,b)
-        explicit inline Colour(const float _r = 0,
-                               const float _g = 0,
-                               const float _b = 0)
+        explicit inline Colour(float _r = 0,
+                               float _g = 0,
+                               float _b = 0)
                         : r(_r), g(_g), b(_b) {}
 
         // Constructor from (h,s,l) description.
-        explicit Colour(const HSL &hsl);
+        explicit Colour(HSL &hsl);
 
         // Colour addition.
-        void operator+=(const Colour &c) {
+        void operator+=(Colour c) {
                 r += c.r;
                 g += c.g;
                 b += c.b;
         }
 
         // Colour subtraction.
-        void operator-=(const Colour &c) {
+        void operator-=(Colour c) {
                 r -= c.r;
                 g -= c.g;
                 b -= c.b;
         }
 
         // Scalar division.
-        void operator/=(const Scalar x) {
+        void operator/=(Scalar x) {
                 r /= x;
                 g /= x;
                 b /= x;
         }
 
         // Scalar colour multiplication.
-        Colour operator*(const Scalar x) const {
+        Colour operator*(Scalar x) {
                 return Colour(r * x, g * x, b * x);
         }
 
         // Scalar colour divison.
-        Colour operator/(const Scalar x) const {
+        Colour operator/(Scalar x) {
                 return Colour(r / x, g / x, b / x);
         }
 
         // Combination of two colours: A' = (Ar * Br, Ag * Bg, Ab * Bb)
-        Colour operator*(const Colour &rhs) const {
+        Colour operator*(Colour &rhs) {
                 return Colour(r * rhs.r, g * rhs.g, b * rhs.b);
         }
 
         // Explicit cast operation from Colour -> Pixel.
-        explicit operator Pixel() const {
+        explicit operator Pixel() {
                 return {scale(clamp(r)), scale(clamp(g)), scale(clamp(b))};
         }
 
-        Scalar max() const {
+        Scalar max() {
                 return std::max(r, std::max(g, b));
         }
 
-        Scalar min() const {
+        Scalar min() {
                 return std::min(r, std::min(g, b));
         }
 
-        Colour clampRange() const {
+        Colour clampRange() {
                 return Colour(clamp(r), clamp(g), clamp(b));
         }
 
-        Scalar delta() const {
+        Scalar delta() {
                 return max() - min();
         }
 
         // Return the sum difference between the r,g,b colour
         // components.
-        Scalar inline diff(const Colour &rhs) const {
+        Scalar inline diff(Colour &rhs) {
                 return fabs(rhs.r - r) + fabs(rhs.g - g) + fabs(rhs.b - b);
         }
 };
@@ -145,7 +145,7 @@ class HSL {
  public:
         Scalar h, s, l;
 
-        explicit HSL(const Colour &c);
+        explicit HSL(Colour &c);
 };
 
 }  // namespace rt

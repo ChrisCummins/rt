@@ -21,6 +21,6 @@
 
 namespace rt {
 
-const Scalar CheckerBoard::gridOffset = 3e6;
+Scalar CheckerBoard::gridOffset = 3e6;
 
 }  // namespace rt
